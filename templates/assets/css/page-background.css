@@ -1,0 +1,25 @@
+body, html {
+    height: 100%;
+    font-family: 'Crimson Text', serif;
+}
+body {
+    text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, .5);
+}
+.wrapper, .wrapper-content {
+    position: relative;
+}
+
+.wrapper:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.6;
+    background-image: url('/assets/img/1310689.jpg');
+    background-repeat: no-repeat;
+    background-position: 50% 0;
+    background-size: cover;
+}
