@@ -16,6 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.urls import path, include, re_path
+from django.views.static import serve
+from django.conf.urls.static import static
+
 from main.views import *
 urlpatterns = [
     # path('admin/', admin.site.urls),
@@ -29,3 +34,9 @@ urlpatterns = [
 
     path('categories', categories, name='categories'),
 ]
+if settings.DEBUG:
+    urlpatterns += [
+        re_path(r'^assets/(?P<path>.*)$', serve, {'document_root': settings.ASSETS_ROOT, 'show_indexes': False}),
+        # re_path(r'^media/(?P<path>.*)$', protected_serve, {'document_root': settings.MEDIA_ROOT, 'show_indexes': False}),
+    ]
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
