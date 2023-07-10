@@ -2,25 +2,37 @@ import operator
 from functools import reduce
 from smtplib import SMTPException
 
+import requests
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, reverse
 from django.views.decorators.csrf import csrf_exempt
-
+from django.conf import settings
 from .forms import ProfileForm, LoginForm
 from .models import Profile
 from .utils import generate_random_string
 
 
 def index(request):
+    request.session['active'] = 'index'
     return render(request, 'landing-page.html', {})
 
 
-@login_required
+# @login_required
 def listing(request, category_id=None):
-    return render(request, 'listing.html', {})
+    request.session['active'] = 'movies-list'
+    url = "https://moviesdatabase.p.rapidapi.com/titles"
+    headers = {
+        "X-RapidAPI-Key": settings.RAPID_API_KEY,
+        "X-RapidAPI-Host": "moviesdatabase.p.rapidapi.com"
+    }
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    print(data)
+    return render(request, 'listing.html', {'data': data})
 
 
 @login_required
@@ -35,6 +47,7 @@ def categories(request):
 
 @csrf_exempt
 def login_view(request):
+    request.session['active'] = 'login'
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('index'))
     form = LoginForm(request=request)
@@ -111,7 +124,7 @@ def registration(request):
             return JsonResponse({'status': 'success', 'message': 'Profile Saved successfully'})
         else:
             return JsonResponse({'status': 'error', 'errors': {k: v[0] for k, v in form.errors.items()}})
-    return render(request, 'profile-form.html', {'form': form})
+    return render(request, 'register.html', {'form': form})
 
 
 @login_required

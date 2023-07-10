@@ -1,18 +1,8 @@
-<!doctype html>
-<html lang="en" class="h-100">
-<head>
-    {% include 'partials/head.html' %}
-    <title>Cover Template · Bootstrap v5.0</title>
-    <!-- Custom styles for this template -->
-    <link href="/assets/css/cover.css" rel="stylesheet">
-    <link href="/assets/css/page-background.css" rel="stylesheet">
+{% extends "base-in.html" %}
+{% block title %}
 
-</head>
-<body class="d-flex h-100 text-center text-white bg-dark wrapper">
-
-<div class="wrapper-content cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-    {% include 'partials/header.html' %}
-
+{% endblock %}
+{% block content %}
     <main class="px-3">
         <h1>By movie lovers.... For movie lovers &#128522</h1>
         <p class="lead">Presenting a wide range of movies; the largest in this world and maybe the next! &#128526</p>
@@ -22,17 +12,4 @@
                 catalogue</a>
         </p>
     </main>
-
-    <footer class="mt-auto text-white-50">
-        <p>See the project source at <a href="https://github.com/..." class="text-white">GitHub.com</a>, developed by
-            <a href="" class="text-white">@peter</a>,
-            <a href="" class="text-white">@clinton</a>,
-            <a href="" class="text-white">@lewis</a>, and
-            <a href="" class="text-white">@geoffrey</a> of the ALX cohort 8 (0622).
-        </p>
-    </footer>
-</div>
-
-
-</body>
-</html>
+{% endblock %}
