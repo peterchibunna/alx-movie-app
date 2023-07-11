@@ -28,10 +28,14 @@ def listing(request, category_id=None):
         "X-RapidAPI-Key": settings.RAPID_API_KEY,
         "X-RapidAPI-Host": "moviesdatabase.p.rapidapi.com"
     }
-    response = requests.get(url, headers=headers)
-    data = response.json()
-
-    print(data)
+    querystring = {"sort": "year.decr", "limit": "12", 'page': request.GET.get('page', 1)}
+    try:
+        response = requests.get(url, headers=headers, params=querystring)
+        data = response.json()
+        data['next'] = data['next'].replace('/titles', reverse('movies-list'))
+    except Exception:
+        data = {'results': [], 'entries': 0, 'error': True}
+    # print(data)
     return render(request, 'listing.html', {'data': data})
 
 

@@ -26,3 +26,8 @@ body {
     background-size: cover;
     background-attachment: fixed;
 }
+
+
+.bg-gradient-title {
+    background-image: linear-gradient(180deg, transparent, transparent, transparent, rgb(0 0 0 / 69%), rgb(4 4 4 / 99%)) !important;
+}
