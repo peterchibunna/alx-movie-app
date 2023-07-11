@@ -30,7 +30,7 @@ urlpatterns = [
     path('auth/register', registration, name='register'),
     path('', index, name='index'),
     path('movies', listing, name='movies-list'),
-    path('movies/<int:movie_id>', movie_detail, name='movie-detail'),
+    path('movies/<str:movie_id>', movie_detail, name='movie-detail'),
 
     path('categories', categories, name='categories'),
     path("__debug__/", include("debug_toolbar.urls"))

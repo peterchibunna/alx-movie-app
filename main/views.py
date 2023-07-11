@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 from .forms import ProfileForm, LoginForm
 from .models import Profile
 from .utils import generate_random_string
@@ -19,6 +20,7 @@ from .utils import generate_random_string
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 
+@cache_page(CACHE_TTL)
 def index(request):
     request.session['active'] = 'index'
     return render(request, 'landing-page.html', {})
@@ -37,16 +39,34 @@ def listing(request, category_id=None):
     try:
         response = requests.get(url, headers=headers, params=querystring)
         data = response.json()
-        data['next'] = data['next'].replace('/titles', reverse('movies-list'))
+        previous_page = int(data.get('page', 1)) - 1
+        next_page = int(data.get('page', 1)) + 1
+        if data['next']:
+            data['next'] = '{}?page={}'.format(reverse('movies-list'), next_page)
+        if previous_page > 0:
+            data['prev'] = '{}?page={}'.format(reverse('movies-list'), previous_page)
     except Exception:
         data = {'results': [], 'entries': 0, 'error': True}
     # print(data)
     return render(request, 'listing.html', {'data': data})
 
 
-@login_required
+# @login_required
+# @cache_page(CACHE_TTL)
 def movie_detail(request, movie_id):
-    return render(request, 'detail.html', {})
+    request.session['active'] = 'movies-list'
+    url = "https://moviesdatabase.p.rapidapi.com/titles/{}".format(movie_id)
+    headers = {
+        "X-RapidAPI-Key": settings.RAPID_API_KEY,
+        "X-RapidAPI-Host": "moviesdatabase.p.rapidapi.com"
+    }
+    try:
+        response = requests.get(url, headers=headers)
+        data = response.json()
+    except Exception:
+        data = {'results': {}, 'error': True}
+    # print(data)
+    return render(request, 'detail.html', {'data': data['results'], 'center_text': False})
 
 
 @login_required

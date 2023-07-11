@@ -11,16 +11,16 @@
                 {% for movie in data.results %}
                     <div class="col">
                         <div class="card">
-                            <img src="
-                                    {% if not movie.primaryImage is None %}{{ movie.primaryImage.url }}{% else %}https://excellencetheme.com/templates/avastream/images/suggested/03.jpg{% endif %}"
+                            <img
+                                    src="{% if not movie.primaryImage is None %}{{ movie.primaryImage.url }}{% else %}https://excellencetheme.com/templates/avastream/images/suggested/03.jpg{% endif %}"
                                  class="card-img img-fluid" alt="{{ movie.originalTitleText.text }}"
                                  style="min-height: 400px; max-height: 400px">
                             <div class="bg-gradient-title card-img-overlay d-flex flex-column align-items-center- justify-content-end">
-                                <a href="" class="stretched-link- text-decoration-none">
+                                <a href="{% url 'movie-detail' movie.id %}" class="text-decoration-none">
                                     <h5 class="text-white card-title mb-1">{{ movie.originalTitleText.text }}
                                         ({{ movie.releaseYear.year }})</h5>
                                 </a>
-                                {#                                <p class="card-text text-white">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>#}
+                                {# <p class="card-text text-white">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>#}
                             </div>
                         </div>
                     </div>
@@ -30,43 +30,23 @@
                             Data is not available at this time.
                         </div>
                     </div>
-                    {% comment %}<div class="col">
-                        <div class="card shadow-sm">
-                            <img src="https://excellencetheme.com/templates/avastream/images/suggested/04.jpg"
-                            class="img-thumbnail"
-                             alt="Movie thumbnail">
-                            <div>Title</div>
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-
-                            <div class="card-body">
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                                    </div>
-                                    <small class="text-muted">9 mins</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>{% endcomment %}
                 {% endfor %}
 
             </div>
             <div class="col w-50 m-auto mt-5">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item"><a class="page-link" href="">Previous</a></li>
+                        <li class="page-item{% if not data.prev %} disabled{% endif %}">
+                            <a class="page-link" href="{{ data.prev }}">Previous</a>
+                        </li>
                         <li class="page-item active">
                           <span class="page-link">
                             {{ data.page }}
-{#                            <span class="sr-only">(current)</span>#}
                           </span>
                         </li>
-{#                        <li class="page-item"><a class="page-link" href="#">1</a></li>#}
-{#                        <li class="page-item"><a class="page-link" href="#">2</a></li>#}
-{#                        <li class="page-item"><a class="page-link" href="#">3</a></li>#}
-                        <li class="page-item"><a class="page-link" href="{{ data.next }}">Next</a></li>
+                        <li class="page-item{% if not data.next %} disabled{% endif %}">
+                            <a class="page-link" href="{{ data.next }}">Next</a>
+                        </li>
                     </ul>
                 </nav>
             </div>
