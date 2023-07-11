@@ -33,6 +33,7 @@ urlpatterns = [
     path('movies/<int:movie_id>', movie_detail, name='movie-detail'),
 
     path('categories', categories, name='categories'),
+    path("__debug__/", include("debug_toolbar.urls"))
 ]
 if settings.DEBUG:
     urlpatterns += [

@@ -10,9 +10,13 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
+from django.views.decorators.cache import cache_page
 from .forms import ProfileForm, LoginForm
 from .models import Profile
 from .utils import generate_random_string
+
+CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 
 def index(request):
@@ -21,6 +25,7 @@ def index(request):
 
 
 # @login_required
+@cache_page(CACHE_TTL)
 def listing(request, category_id=None):
     request.session['active'] = 'movies-list'
     url = "https://moviesdatabase.p.rapidapi.com/titles"
