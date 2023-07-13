@@ -6,15 +6,28 @@
 
     <div class="album py-5 bg-light-">
         <div class="container">
-
+            <form class="mb-5 w-50 m-auto" method="post" action="{% url 'movies-list' %}?rand={% now 'U' %}">
+                {% csrf_token %}
+                <div class="search">
+                    <div class="row">
+                        <div class="col">
+                            <div>
+                                <div class="search-inner"><i class="bx bx-search-alt"></i>
+                                    <input name="search" title="Search by movie title" type="text" class="form-control" placeholder="Search by movie title">
+                                    <button>Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
             <div class="row row-cols-1 row-cols-sm-3 row-cols-md-4 g-3">
                 {% for movie in data.results %}
                     <div class="col">
                         <div class="card">
-                            <img
-                                    src="{% if not movie.primaryImage is None %}{{ movie.primaryImage.url }}{% else %}https://excellencetheme.com/templates/avastream/images/suggested/03.jpg{% endif %}"
-                                 class="card-img img-fluid" alt="{{ movie.originalTitleText.text }}"
-                                 style="min-height: 400px; max-height: 400px">
+                            <img src="{% if not movie.primaryImage is None %}{{ movie.primaryImage.url }}{% else %}https://excellencetheme.com/templates/avastream/images/suggested/03.jpg{% endif %}"
+                                    class="card-img img-fluid" alt="{{ movie.originalTitleText.text }}"
+                                    style="min-height: 400px; max-height: 400px">
                             <div class="bg-gradient-title card-img-overlay d-flex flex-column align-items-center- justify-content-end">
                                 <a href="{% url 'movie-detail' movie.id %}" class="text-decoration-none">
                                     <h5 class="text-white card-title mb-1">{{ movie.originalTitleText.text }}
@@ -26,7 +39,7 @@
                     </div>
                 {% empty %}
                     <div class="col w-50 m-auto">
-                        <div class="alert alert-warning">
+                        <div class="alert alert-danger">
                             Data is not available at this time.
                         </div>
                     </div>

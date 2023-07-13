@@ -27,7 +27,7 @@ def index(request):
 
 
 @login_required
-@cache_page(CACHE_TTL)
+# @cache_page(CACHE_TTL)
 def listing(request, category_id=None):
     request.session['active'] = 'movies-list'
     url = "https://moviesdatabase.p.rapidapi.com/titles"
@@ -35,7 +35,13 @@ def listing(request, category_id=None):
         "X-RapidAPI-Key": settings.RAPID_API_KEY,
         "X-RapidAPI-Host": "moviesdatabase.p.rapidapi.com"
     }
-    querystring = {"sort": "year.decr", "limit": "12", "page": request.GET.get('page', 1)}
+    querystring = {
+        "sort": "year.decr",
+        "limit": "12",
+        "list": "most_pop_movies",
+        # "info": "base_info",
+        "page": request.GET.get('page', 1)
+    }
     try:
         response = requests.get(url, headers=headers, params=querystring)
         data = response.json()
@@ -60,13 +66,13 @@ def movie_detail(request, movie_id):
         "X-RapidAPI-Key": settings.RAPID_API_KEY,
         "X-RapidAPI-Host": "moviesdatabase.p.rapidapi.com"
     }
-    params = {}
+    params = {"info": "base_info"}
     try:
         response = requests.get(url, headers=headers, params=params)
         data = response.json()
     except Exception:
         data = {'results': {}, 'error': True}
-    # print(data)
+    print(data)
     return render(request, 'detail.html', {'data': data['results'], 'center_text': False})
 
 

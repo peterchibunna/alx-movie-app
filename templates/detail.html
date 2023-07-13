@@ -1,4 +1,5 @@
 {% extends "base-in.html" %}
+{% load humanize %}
 {% block title %}
     <title>{{ data.primaryImage.caption.plainText }} · alx-movie-app</title>
 {% endblock %}
@@ -12,12 +13,13 @@
             <article class="blog-post me-3" style="text-align: justify">
                 <img alt="movie poster" src="{{ data.primaryImage.url }}" class="rounded float-start img-fluid w-50 me-3">
                 <p class="blog-post-meta">Release Year: {{ data.releaseYear.year }}</p>
+                <p class="blog-post-meta">Rating: {{ data.ratingsSummary.aggregateRating }} ({{ data.ratingsSummary.voteCount|intcomma }} votes)</p>
 
-                <p>{% lorem 1 p %}</p>
+                <p>{{ data.plot.plotText.plainText }}</p>
                 <hr>
-                <p>{% lorem 5 p %}</p>
-                <hr>
-                <p>This is some additional paragraph placeholder content. It has been written to fill the available space and show how a longer snippet of text affects the surrounding content. We'll repeat it often to keep the demonstration flowing, so be on the lookout for this exact same string of text.</p>
+{#                <p>{% lorem 5 p %}</p>#}
+{#                <hr>#}
+{#                <p>This is some additional paragraph placeholder content. It has been written to fill the available space and show how a longer snippet of text affects the surrounding content. We'll repeat it often to keep the demonstration flowing, so be on the lookout for this exact same string of text.</p>#}
             </article>
         </div>
 

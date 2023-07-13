@@ -1,0 +1,17 @@
+[Unit]
+Description=gunicorn reporting daemon
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/home/user1/alx-movie-app
+ExecStart=/home/user1/alx-movie-app/venv/bin/gunicorn --access-logfile - --workers 3 --timeout 600 --bind unix:/home/user1/alx-movie-app/AlxMovieApp.sock AlxMovieApp.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+; put this file in `/etc/systemd/system/gunicorn@alx.service`
+
+
+; then create the nginx file that binds to the sock file without which it would not work
