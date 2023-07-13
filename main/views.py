@@ -27,7 +27,7 @@ def index(request):
 
 
 @login_required
-# @cache_page(CACHE_TTL)
+@cache_page(CACHE_TTL)
 def listing(request, category_id=None):
     request.session['active'] = 'movies-list'
     url = "https://moviesdatabase.p.rapidapi.com/titles"
@@ -58,7 +58,7 @@ def listing(request, category_id=None):
 
 
 @login_required
-# @cache_page(CACHE_TTL)
+@cache_page(CACHE_TTL)
 def movie_detail(request, movie_id):
     request.session['active'] = 'movies-list'
     url = "https://moviesdatabase.p.rapidapi.com/titles/{}".format(movie_id)
@@ -72,7 +72,7 @@ def movie_detail(request, movie_id):
         data = response.json()
     except Exception:
         data = {'results': {}, 'error': True}
-    print(data)
+    # print(data)
     return render(request, 'detail.html', {'data': data['results'], 'center_text': False})
 
 
