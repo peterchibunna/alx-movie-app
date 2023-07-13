@@ -3,16 +3,16 @@ from functools import reduce
 from smtplib import SMTPException
 
 import requests
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.core.mail import EmailMessage
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, reverse
-from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
-from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.views.decorators.cache import cache_page
-from django.core.cache import cache
+from django.views.decorators.csrf import csrf_exempt
+
 from .forms import ProfileForm, LoginForm
 from .models import Profile
 from .utils import generate_random_string
@@ -20,13 +20,13 @@ from .utils import generate_random_string
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 
-@cache_page(CACHE_TTL)
 def index(request):
+    # do not cache this page
     request.session['active'] = 'index'
     return render(request, 'landing-page.html', {})
 
 
-# @login_required
+@login_required
 @cache_page(CACHE_TTL)
 def listing(request, category_id=None):
     request.session['active'] = 'movies-list'
@@ -51,7 +51,7 @@ def listing(request, category_id=None):
     return render(request, 'listing.html', {'data': data})
 
 
-# @login_required
+@login_required
 # @cache_page(CACHE_TTL)
 def movie_detail(request, movie_id):
     request.session['active'] = 'movies-list'
@@ -60,13 +60,13 @@ def movie_detail(request, movie_id):
         "X-RapidAPI-Key": settings.RAPID_API_KEY,
         "X-RapidAPI-Host": "moviesdatabase.p.rapidapi.com"
     }
-    params = {"info": "base-info"}
+    params = {}
     try:
         response = requests.get(url, headers=headers, params=params)
         data = response.json()
     except Exception:
         data = {'results': {}, 'error': True}
-    print(data)
+    # print(data)
     return render(request, 'detail.html', {'data': data['results'], 'center_text': False})
 
 
@@ -90,9 +90,10 @@ def login_view(request):
                 next_page = request.POST.get('next')
             else:
                 next_page = reverse('index')
-            # return JsonResponse({'status': 'success', 'message': 'Login successful. Redirecting ...',
-            # 'page': next_page})
-            return HttpResponseRedirect(next_page)
+            return JsonResponse({
+                'status': 'success', 'message': 'Login successful. Redirecting ...', 'page': next_page})
+            # return HttpResponseRedirect(next_page)
+            # we will use javascript to redirect since we're using ajax to process the login
         else:
             return JsonResponse({'status': 'error', 'errors': {k: v[0] for k, v in form.errors.items()}})
     return render(request, 'login.html', {'form': form})
@@ -151,7 +152,8 @@ def registration(request):
         form = ProfileForm(request.POST)
         if form.is_valid():
             form.save()
-            return JsonResponse({'status': 'success', 'message': 'Profile Saved successfully'})
+            return JsonResponse(
+                {'status': 'success', 'message': 'Profile Saved successfully, Redirecting to login page'})
         else:
             return JsonResponse({'status': 'error', 'errors': {k: v[0] for k, v in form.errors.items()}})
     return render(request, 'register.html', {'form': form})

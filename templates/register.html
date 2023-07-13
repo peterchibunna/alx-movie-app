@@ -16,6 +16,48 @@
             <p class="mt-5 mb-3 text-light"><a class="text-white-50" href="{% url 'index' %}">← Back to Home</a></p>
             <p class="mt-5 mb-3 text-light">&copy; 2023</p>
         </div>
-
     </form>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            $('form[action="{% url 'register' %}"]').off('submit').on('submit', function (e) {
+                e.preventDefault();
+                showLoader('Creating your new account');
+                var form = $(this);
+                var url = form.attr('action'), data = form.serializeArray();
+                $.post(url, data, function (response) {
+                    hideLoader();
+                    if (response.status === 'success') {
+                        Swal.fire({
+                            icon: "success",
+                            html: response.message,
+                            title: 'Success',
+                            customClass: {
+                                confirmButton: "btn btn-success"
+                            }
+                        });
+                        $(form)[0].reset();
+                        setTimeout(function () {
+                            location.href = '{% url 'login' %}';
+                        }, 1500);
+                    } else {
+                        formatError(response.errors || 'An error occurred. Please try again');
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                    hideLoader();
+                    formatError('An error occurred on the server. Please try again');
+                });
+            });
+
+            new Pikaday({
+                field: document.getElementById('id_date_of_birth'),
+                toString(date, format) {
+                    const day = date.getDate();
+                    const month = date.getMonth() + 1;
+                    const year = date.getFullYear();
+                    return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
+                }
+            });
+        });
+    </script>
 {% endblock %}

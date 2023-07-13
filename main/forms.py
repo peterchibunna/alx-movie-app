@@ -14,26 +14,6 @@ class CustomSelect(Field):
     template = 'partials/inputs/custom-select.html'
 
 
-class CustomCheckBox(Field):
-    template = 'partials/inputs/custom-checkbox.html'
-
-
-class CustomRadio(Field):
-    template = 'partials/inputs/custom-radio.html'
-
-
-class CustomFile(Field):
-    template = 'partials/inputs/custom-file.html'
-
-
-class CustomMultiCheck(Field):
-    template = 'partials/inputs/custom-multi-check.html'
-
-
-class CustomMultiCheckStyled(Field):
-    template = 'partials/inputs/custom-multi-check-styled.html'
-
-
 class ProfileForm(forms.ModelForm):
     password1 = forms.CharField(max_length=100, widget=forms.PasswordInput, required=True, label='Password')
     password2 = forms.CharField(max_length=100, widget=forms.PasswordInput, label='Confirm Password', required=True)
@@ -102,6 +82,7 @@ class ProfileForm(forms.ModelForm):
                 self.add_error('email', 'Email address already registered')
             if User.objects.filter(username=username.lower()).exists():
                 self.add_error('email', 'Username is taken. Choose another')
+            self.instance.username = username
         return cleaned
 
 

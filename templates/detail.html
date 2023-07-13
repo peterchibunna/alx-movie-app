@@ -11,7 +11,7 @@
 
             <article class="blog-post me-3" style="text-align: justify">
                 <img alt="movie poster" src="{{ data.primaryImage.url }}" class="rounded float-start img-fluid w-50 me-3">
-                <p class="blog-post-meta">{{ data.releaseYear.year }}</p>
+                <p class="blog-post-meta">Release Year: {{ data.releaseYear.year }}</p>
 
                 <p>{% lorem 1 p %}</p>
                 <hr>
@@ -30,7 +30,7 @@
 
                 <div class="p-4">
                     <h4 class="fst-italic">Available Genres</h4>
-                    <ol class="list-unstyled mb-0">
+                    {% comment %}<ol class="list-unstyled mb-0">
                         <li><a href="#">March 2021</a></li>
                         <li><a href="#">February 2021</a></li>
                         <li><a href="#">January 2021</a></li>
@@ -43,7 +43,7 @@
                         <li><a href="#">June 2020</a></li>
                         <li><a href="#">May 2020</a></li>
                         <li><a href="#">April 2020</a></li>
-                    </ol>
+                    </ol>{% endcomment %}
                 </div>
             </div>
         </div>
