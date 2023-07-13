@@ -35,9 +35,9 @@ urlpatterns = [
     path('categories', categories, name='categories'),
     path("__debug__/", include("debug_toolbar.urls"))
 ]
-if settings.DEBUG:
-    urlpatterns += [
-        re_path(r'^assets/(?P<path>.*)$', serve, {'document_root': settings.ASSETS_ROOT, 'show_indexes': False}),
-        # re_path(r'^media/(?P<path>.*)$', protected_serve, {'document_root': settings.MEDIA_ROOT, 'show_indexes': False}),
-    ]
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# if settings.DEBUG:
+urlpatterns += [
+    re_path(r'^assets/(?P<path>.*)$', serve, {'document_root': settings.ASSETS_ROOT, 'show_indexes': False}),
+    # re_path(r'^media/(?P<path>.*)$', protected_serve, {'document_root': settings.MEDIA_ROOT, 'show_indexes': False}),
+]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
