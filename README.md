@@ -6,3 +6,6 @@
 3. Install app dependencies via pip `pip install -r requirements.txt`
 4. Start the debug server: `./manage.py runserver localhost:8000`
 5. Open your browser to http://localhost:8000 and test
+
+Project by:
+Peter, Clinton, Geofrey and Lewis
