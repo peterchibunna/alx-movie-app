@@ -13,7 +13,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 
 from .database import DB_CONFIG
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%!t+0r5nkqw-6(31^!xa1kfhhwudo57z5d=_7z$v5djxa1q-j1'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,8 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.forms',
     'widget_tweaks',
     'main.apps.MainConfig',
+    'crispy_forms',
+    'crispy_bootstrap5',
     'debug_toolbar'
 ]
 
@@ -118,10 +124,13 @@ CACHES = {
        "LOCATION": "redis://127.0.0.1:6379",
    }
 }
-RAPID_API_KEY = ""
+RAPID_API_KEY = os.environ.get('RAPID_API_KEY')
 
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
 CACHE_TTL = 60 * 15
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'

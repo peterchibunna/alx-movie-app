@@ -1,0 +1,48 @@
+{% load crispy_forms_field %}
+{% load str_to_dict %}
+<div class="mb-10-">
+	{% with flat_attrs|str_to_dict:" " as attrs %}
+		<label class="form-label d-block">
+			{#{% if 'showLabel' in flat_attrs and attrs.showLabel is True %}#}
+			<span class="text-muted">{{ field.label }}{% if field.field.required %}
+				<span class="align-middle fa-2x- text-danger"> *</span>{% endif %}</span>
+			{#{% endif %}#}
+			{% if 'noDefaultClass' in flat_attrs and attrs.noDefaultClass is True %}
+				{% crispy_field field 'class' '' 'autocomplete' 'off' %}
+			{% else %}
+				{% crispy_field field 'class' 'form-select form-select-solid' 'autocomplete' 'off' %}
+			{% endif %}
+		</label>
+		<small>
+			<span class="form-text text-muted" data-help-text="{{ field.help_text }}">{{ field.help_text }}</span>
+		</small>
+		{% for i in field.errors %}
+			<div class="invalid-feedback"><i class="fa fa-exclamation-circle fa-fw"></i> {{ i }}</div>
+		{% endfor %}
+
+	{% endwith %}
+</div>
+
+{% comment %}
+{% with flat_attrs|str_to_dict:" " as attrs %}
+	{% if 'compact' in flat_attrs and attrs.compact is True %}
+		<label for="{{ field.id_for_label }}">
+			{{ field.label }}{% if field.field.required %}<span class="align-middle fa-2x- text-danger"> *</span>{% endif %}
+		</label>
+		{% crispy_field field 'autocomplete' 'off' 'placeholder' field.label %}
+		<small
+			{% if field.data_mask  == "currency" %} class="text-right"{% endif %}><span class="form-text text-muted" data-help-text="{{ field.help_text }}">{{ field.help_text }}</span></small>
+		{% for i in field.errors %}
+			<div class="invalid-feedback"><i class="fa fa-exclamation-circle fa-fw"></i> {{ i }}</div>{% endfor %}
+	{% else %}
+		<label for="{{ field.id_for_label }}">
+			{{ field.label }}{% if field.field.required %}<span class="align-middle fa-2x- text-danger"> *</span>{% endif %}
+		</label>
+		{% crispy_field field 'autocomplete' 'off' %}
+		<small
+			{% if field.data_mask  == "currency" %} class="text-right"{% endif %}><span class="form-text text-muted" data-help-text="{{ field.help_text }}">{{ field.help_text }}</span></small>
+		{% for i in field.errors %}
+			<div class="invalid-feedback"><i class="fa fa-exclamation-circle fa-fw"></i> {{ i }}</div>{% endfor %}
+	{% endif %}
+{% endwith %}
+{% endcomment %}

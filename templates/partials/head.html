@@ -16,6 +16,30 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet">
 
 <meta name="theme-color" content="#000000">
+<script type="text/javascript">
+    var blockUI;
+    var showLoader = function (customMsg) {
+        blockUI = Swal.fire({
+            icon: null,
+            html: '<div class="blockui-message blockui-message d-flex flex-column align-items-center"><span class="spinner-border text-primary w-50px h-50px"></span> <div class="mt-4 fw-bold"><span id="loader-custom-msg">Loading</span>...</div></div>',
+            title: null,
+            showCancelButton: false,
+            showCloseButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false
+        });
+        if (customMsg !== undefined) {
+            document.querySelector('#loader-custom-msg').innerHTML = customMsg;
+        } else {
+            document.querySelector('#loader-custom-msg').innerHTML = 'Loading';
+        }
+    };
+
+    var hideLoader = function (div_to_wrap) {
+        blockUI.close()
+    };
+</script>

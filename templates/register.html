@@ -1,17 +1,21 @@
 {% extends "base-out.html" %}
+{% load crispy_forms_tags %}
 {% block title %}
     <title>Create new Account · alx-movie-app</title>
 {% endblock %}
 {% block content %}
-    <form method="post" action="{% url 'register' %}">
+    <form method="post" action="{% url 'register' %}" class="text-start">
         {% csrf_token %}
-        <h1 class="h3 mb-3 fw-normal">Create a New Account</h1>
 
+        <h1 class="h3 mb-3 fw-normal text-center">Create a New Account</h1>
+        {% crispy form %}
+        <div class="text-center">
+            <button class="mt-5 mb-3 w-100 btn btn-lg btn-danger" type="submit">Sign Up</button>
+            or <a class="text-white-50" href="{% url 'login' %}">Login</a> if you already have an account.
 
-        <button class="mt-5 mb-3 w-100 btn btn-lg btn-danger" type="submit">Sign Up</button>
-        or <a class="text-white-50" href="{% url 'login' %}">Login</a> if you already have an account.
+            <p class="mt-5 mb-3 text-light"><a class="text-white-50" href="{% url 'index' %}">← Back to Home</a></p>
+            <p class="mt-5 mb-3 text-light">&copy; 2023</p>
+        </div>
 
-        <p class="mt-5 mb-3 text-light"><a class="text-white-50" href="{% url 'index' %}">← Back to Home</a></p>
-        <p class="mt-5 mb-3 text-light">&copy; 2023</p>
     </form>
 {% endblock %}

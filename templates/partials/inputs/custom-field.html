@@ -1,0 +1,55 @@
+{% load crispy_forms_field %}
+{% load str_to_dict %}
+{% with flat_attrs|str_to_dict:" " as attrs %}
+	<div class="mb-10-">
+		<label class="form-label d-block {% if 'compact' in flat_attrs and attrs.compact is True %} mb-0{% endif %}">
+			{% comment %}{% if 'showLabel' in flat_attrs and attrs.showLabel is True %}{% endcomment %}
+		{% comment %}{% if 'popover_label' in flat_attrs and attrs.popover_label != '' and 'popover_content' in flat_attrs and attrs.popover_content != '' %}
+			<div class="d-flex justify-content-between">
+			<span class="text-muted">{{ field.label }}{% if field.field.required %}
+				<span class="align-middle fa-2x- text-danger"> *</span>{% endif %}</span>
+			<span class="text-muted">Click here</span>
+			</div>
+		{% else %}{% endcomment %}
+			<span class="text-muted">{{ field.label }}{% if field.field.required %}
+				<span class="align-middle fa-2x- text-danger"> *</span>{% endif %}</span>
+{% comment %}		{% endif %}{% endcomment %}
+			{% comment %}{% endif %}{% endcomment %}
+			{% comment %}{{ field.label }}{% if field.field.required %}<span class="align-middle fa-2x- text-danger"> *</span>{% endif %}{% endcomment %}
+			{% if 'compact' in flat_attrs and attrs.compact is True %}
+				{% crispy_field field 'class' 'form-control form-control-solid form-control-sm' 'autocomplete' 'off' 'placeholder-data' field.label %}
+			{% else %}
+				{% crispy_field field 'class' 'form-control form-control-solid' 'autocomplete' 'off' 'placeholder-data' field.label %}
+			{% endif %}
+		</label>
+		<small>
+			<span class="form-text text-muted" data-help-text="{{ field.help_text }}">{{ field.help_text }}</span>
+		</small>
+		{% for i in field.errors %}
+			<div class="invalid-feedback"><i class="fa fa-exclamation-circle fa-fw"></i> {{ i }}</div>
+		{% endfor %}
+	</div>
+{% endwith %}
+{% comment %}
+{% with flat_attrs|str_to_dict:" " as attrs %}
+	{% if 'compact' in flat_attrs and attrs.compact is True %}
+		<label for="{{ field.id_for_label }}">
+			{{ field.label }}{% if field.field.required %}<span class="align-middle fa-2x- text-danger"> *</span>{% endif %}
+		</label>
+		{% crispy_field field 'autocomplete' 'off' 'placeholder' field.label %}
+		<small
+			{% if field.data_mask  == "currency" %} class="text-right"{% endif %}><span class="form-text text-muted" data-help-text="{{ field.help_text }}">{{ field.help_text }}</span></small>
+		{% for i in field.errors %}
+			<div class="invalid-feedback"><i class="fa fa-exclamation-circle fa-fw"></i> {{ i }}</div>{% endfor %}
+	{% else %}
+		<label for="{{ field.id_for_label }}">
+			{{ field.label }}{% if field.field.required %}<span class="align-middle fa-2x- text-danger"> *</span>{% endif %}
+		</label>
+		{% crispy_field field 'autocomplete' 'off' %}
+		<small
+			{% if field.data_mask  == "currency" %} class="text-right"{% endif %}><span class="form-text text-muted" data-help-text="{{ field.help_text }}">{{ field.help_text }}</span></small>
+		{% for i in field.errors %}
+			<div class="invalid-feedback"><i class="fa fa-exclamation-circle fa-fw"></i> {{ i }}</div>{% endfor %}
+	{% endif %}
+{% endwith %}
+{% endcomment %}
