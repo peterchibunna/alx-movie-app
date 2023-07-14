@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.core.mail import EmailMessage
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, reverse
 from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
@@ -18,6 +18,11 @@ from .models import Profile
 from .utils import generate_random_string
 
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
+
+
+def acme_challenge(request, codes):
+    full_code = ''
+    return HttpResponse(full_code)
 
 
 def index(request):

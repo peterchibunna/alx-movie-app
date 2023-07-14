@@ -24,6 +24,7 @@ from django.conf.urls.static import static
 from main.views import *
 urlpatterns = [
     # path('admin/', admin.site.urls),
+    path('.well-known/acme-challenge/<str:codes>', acme_challenge),
     path('auth/login', login_view, name='login'),
     path('auth/reset', reset_password, name='reset-password'),
     path('auth/logout', logout, name='logout'),

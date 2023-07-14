@@ -3,8 +3,8 @@
 
 server {
     listen 80;
-    server_name alxmovieapp.tech;
-
+    server_name alxmovieapp.tech www.alxmovieapp.tech;
+#     return 301 https://alxmovieapp.tech$request_uri;
 }
 
 server {
